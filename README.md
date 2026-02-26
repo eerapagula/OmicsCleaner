@@ -1,111 +1,162 @@
 # OmicsCleaner
 
-OmicsCleaner is a command-line bioinformatics tool designed to clean and standardize FASTA sequence files from genomics and transcriptomics datasets before downstream analysis.
+**OmicsCleaner** is a small command-line utility for cleaning and standardizing FASTA files generated from genome and transcriptome projects.
 
-Modern sequencing assemblies (RNA-seq transcriptomes, genome annotations, ORF predictions) frequently contain:
-- duplicate sequences
-- inconsistent headers
-- invalid characters
-- very short fragments
-- problematic IDs that break BLAST, TransDecoder, WGCNA and annotation pipelines
+During RNA-seq assemblies, ORF prediction, or annotation workflows, FASTA files often contain duplicate sequences, inconsistent identifiers, strange characters, or very short fragments. These small issues quietly break downstream tools such as BLAST database creation, TransDecoder, primer design, gene expression matching, and network analysis.
 
-OmicsCleaner automatically fixes these issues and produces a ready-to-analyze dataset.
+This program prepares sequences so they can be used reliably in downstream bioinformatics analysis.
 
 ---
 
-## Why this tool is needed
+## What problem does this solve?
 
-Many downstream tools fail due to messy FASTA headers:
+Most genomics pipelines assume that sequence identifiers are clean and unique.
+In reality, assembly outputs usually look like this:
 
-Examples:
-- BLAST database creation fails
-- TransDecoder cannot map transcripts
-- MISA primer design crashes
-- Gene expression tools cannot match IDs
-- WGCNA loses genes due to inconsistent identifiers
+* headers with spaces or symbols
+* multiple transcripts having identical sequences
+* IDs changing between tools
+* short fragments included with real genes
+* invalid characters inside sequences
 
-OmicsCleaner standardizes sequences so they are compatible with downstream genomics workflows.
+Because of this:
+
+* BLAST databases fail to build
+* annotation tools cannot map genes
+* WGCNA drops genes due to mismatched IDs
+* downstream analyses become difficult to reproduce
+
+OmicsCleaner fixes these issues automatically and produces a consistent dataset ready for analysis.
 
 ---
 
-## Features
+## What the tool does
 
-• Removes duplicate sequences  
-• Renames sequence IDs systematically  
-• Removes illegal characters (N, spaces, symbols)  
-• Filters short sequences  
-• Generates dataset statistics  
-• Creates ID mapping table (old ID → new ID)  
-• Ready for BLAST / annotation / WGCNA / phylogeny
+OmicsCleaner will:
+
+* remove duplicate sequences
+* rename sequence IDs in a consistent format
+* remove problematic characters
+* filter very short sequences
+* generate a mapping between old IDs and new IDs
+* produce basic statistics of the dataset
+
+The cleaned FASTA file can be directly used for BLAST, functional annotation, expression analysis, or comparative genomics.
 
 ---
 
 ## Installation
 
 Clone the repository:
+
+```
 git clone https://github.com/eerapagula/OmicsCleaner.git
 cd OmicsCleaner
-# Create environment:
+```
+
+Create a conda environment:
+
+```
 conda create -n omicscleaner python=3.10 -y
-# activate environment
 conda activate omicscleaner
-# Install dependencies
+```
+
+Install dependencies and the tool:
+
+```
 pip install -r requirements.txt
 pip install -e .
-# Usage
-omicscleaner input.fasta
-# with options
-omicscleaner input.fasta --prefix ER --minlen 100 --outdir results
-
-
-### Parameters
-
-| Parameter | Description |
-|----------|------------|
-| input.fasta | input FASTA file |
-| --prefix | prefix for renamed IDs (default: GENE) |
-| --minlen | minimum sequence length (default: 50) |
-| --outdir | output directory (default: output) |
+```
 
 ---
 
-## Output Files
+## Usage
 
-The program creates:
+Basic run:
+
+```
+omicscleaner input.fasta
+```
+
+Typical use:
+
+```
+omicscleaner transcripts.fasta --prefix AMAR --minlen 100 --outdir cleaned_data
+```
+
+### Options
+
+| Option      | Meaning                                       |
+| ----------- | --------------------------------------------- |
+| input.fasta | Input FASTA file                              |
+| --prefix    | Prefix used for renamed IDs (default: GENE)   |
+| --minlen    | Minimum sequence length to keep (default: 50) |
+| --outdir    | Output directory (default: output)            |
+
+---
+
+## Output
+
+The program creates four files:
 
 **cleaned.fasta**
-Cleaned sequences with standardized IDs
+Final cleaned sequences with standardized identifiers
 
-**id_mapping.tsv**  
-Mapping between original IDs and new IDs
+**id_mapping.tsv**
+Table connecting original IDs to new IDs
 
-**duplicates.txt**  
-List of removed duplicate sequences
+**duplicates.txt**
+Sequences removed because they were identical to another entry
 
-**stats.txt**  
-Dataset statistics (counts and length distribution)
+**stats.txt**
+Basic statistics such as number of sequences and length distribution
 
 ---
 
-## Typical Applications
+## Example
 
-• RNA-seq transcriptome preprocessing  
-• Genome annotation cleanup  
-• Preparing BLAST databases  
-• Preparing sequences for WGCNA  
-• Functional annotation pipelines  
-• Comparative genomics datasets
+Input FASTA:
+
+```
+>transcript|abc 1
+ATGCGTAGCTAGCTAGCTAGCTAGCTAG
+
+>duplicate_seq
+ATGCGTAGCTAGCTAGCTAGCTAGCTAG
+```
+
+After running OmicsCleaner:
+
+```
+>GENE_000001
+ATGCGTAGCTAGCTAGCTAGCTAGCTAG
+```
+
+---
+
+## When should you use this?
+
+This tool is useful before:
+
+* building a BLAST database
+* running TransDecoder
+* functional annotation pipelines
+* WGCNA or expression studies
+* comparative genomics analysis
+* primer or marker development
 
 ---
 
 ## Citation
 
-If you use this tool in research, please cite:
+If this tool is useful in your research, please cite:
 
-Ramesh Eerapagula. OmicsCleaner: FASTA preprocessing tool for genomics datasets. GitHub repository.
+Ramesh Eerapagula, *OmicsCleaner: FASTA preprocessing tool for genomics datasets*, GitHub repository.
 
 ---
 
 ## Author
-Ramesh Eerapagula  
-Computational Biology / Genomics Research
+
+Ramesh Eerapagula
+Computational Biology and Genomics Researcher
+
