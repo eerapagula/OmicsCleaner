@@ -154,6 +154,27 @@ If this tool is useful in your research, please cite:
 Ramesh Eerapagula, *OmicsCleaner: FASTA preprocessing tool for genomics datasets*, GitHub repository.
 
 ---
+---
+
+## Citation
+
+If you use OmicsCleaner in your research, please cite the software:
+
+**APA style**
+
+Eerapagula, R. (2026). *OmicsCleaner: FASTA preprocessing and standardization tool (Version 1.0.0)*. GitHub. https://github.com/eerapagula/OmicsCleaner
+
+**BibTeX**
+
+```
+@software{eerapagula_omicscleaner_2026,
+  author  = {Eerapagula, Ramesh},
+  title   = {OmicsCleaner: FASTA preprocessing and standardization tool},
+  year    = {2026},
+  version = {1.0.0},
+  url     = {https://github.com/eerapagula/OmicsCleaner}
+}
+```
 
 ## Author
 

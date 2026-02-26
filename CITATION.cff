@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "OmicsCleaner: FASTA preprocessing and standardization tool"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Eerapagula
+    given-names: Ramesh
+version: 1.0.0
+date-released: 2026-02-26
+url: https://github.com/eerapagula/OmicsCleaner
